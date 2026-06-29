@@ -1,0 +1,23 @@
+services:
+  app:
+    image: ${ESA_IMAGE}
+    container_name: esa-tool
+    platform: ${APP_PLATFORM:-linux/amd64}
+    pull_policy: always
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-8000}:3838"
+    environment:
+      ESA_KEEPALIVE_DOT: "${ESA_KEEPALIVE_DOT:-0}"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      BLIS_NUM_THREADS: "1"
+      VECLIB_MAXIMUM_THREADS: "1"
+    mem_limit: ${APP_MEM_LIMIT:-900m}
+    cpus: ${APP_CPUS:-1.0}
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
